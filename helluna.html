@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELUNA - Bidhaa Bora na Bei Nafuu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f4f7f6;
+        }
+        .product-img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Top Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-xl shadow-sm">
+                    <i class="fas fa-shopping-basket"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg leading-tight tracking-tight text-slate-900">HELUNA</h1>
+                    <p class="text-xs text-slate-500">Duka la Vyakula &amp; Vifaa • TZS</p>
+                </div>
+            </div>
+            <button type="button" onclick="requestAdminAccess()" class="relative flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 transition">
+                <i class="fas fa-lock text-slate-500"></i>
+                Admin / Dhibiti Stock
+                <span id="adminOrderBadge" class="hidden bg-rose-600 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded-full">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div class="bg-gradient-to-r from-emerald-700 to-emerald-600 rounded-2xl p-6 sm:p-8 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div class="max-w-2xl">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-800/60 text-emerald-100 text-xs font-semibold mb-3">
+                    🇹🇿 Karibu HELUNA • Huduma ya Haraka
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+                    Agiza Vifaranga, Mayai &amp; Power Super Sembe
+                </h2>
+                <p class="text-emerald-100 text-sm sm:text-base leading-relaxed">
+                    Karibu HELUNA! Chagua vifaranga, mayai, na unga wa POWER SUPER SEMBE (5kg na 25kg). Angalia idadi iliyobaki na utie oda yako.
+                </p>
+            </div>
+            <a href="https://wa.me/255753411598" target="_blank" rel="noopener noreferrer" class="bg-emerald-800/70 hover:bg-emerald-800 border border-emerald-500/30 rounded-xl p-4 flex items-center gap-3.5 shrink-0 w-full md:w-auto transition">
+                <div class="w-10 h-10 rounded-lg bg-amber-400 text-slate-900 flex items-center justify-center text-lg shrink-0">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-emerald-200 font-medium">Msaada wa Haraka / Simu &amp; WhatsApp</p>
+                    <p class="text-base font-extrabold tracking-wide">+255753411598</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- Left Column: Search, Filters & Products -->
+            <div class="lg:col-span-8 space-y-6">
+
+                <!-- Search & Filter Bar -->
+                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 flex flex-col sm:flex-row gap-3 items-center justify-between">
+                    <div class="relative w-full sm:w-80">
+                        <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Tafuta Vifaranga, Mayai, Power Super Sembe..."
+                            class="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0" id="categoryButtons">
+                        <button type="button" onclick="setCategory('all', this)" class="cat-btn active px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white transition shrink-0">Zote</button>
+                        <button type="button" onclick="setCategory('Mayai & Unga', this)" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition shrink-0">Mayai &amp; Unga</button>
+                        <button type="button" onclick="setCategory('Vifaranga', this)" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition shrink-0">Vifaranga</button>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
+            </div>
+
+            <!-- Right Column: Order Cart & Customer Form -->
+            <div class="lg:col-span-4 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden sticky top-24">
+                <div class="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <i class="fas fa-receipt text-emerald-400"></i>
+                        <h3 class="font-bold text-base">Sehemu ya Kutia Oda</h3>
+                    </div>
+                    <span id="cartBadge" class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">0 Bidhaa</span>
+                </div>
+
+                <div class="p-5 space-y-5">
+                    <!-- Cart Items Container -->
+                    <div id="cartItemsContainer" class="min-h-[140px] max-h-[280px] overflow-y-auto border-2 border-dashed border-slate-200 rounded-xl p-4 flex flex-col justify-center">
+                        <div id="emptyCartMsg" class="text-center py-4">
+                            <div class="w-12 h-12 bg-slate-100 text-slate-400 rounded-xl flex items-center justify-center mx-auto mb-2 text-xl">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <p class="text-sm font-bold text-slate-600">Kikapu chako kiko wazi</p>
+                            <p class="text-xs text-slate-400 mt-1">Bofya "Weka Kwenye Oda" kwenye bidhaa unazohitaji.</p>
+                        </div>
+                        <div id="cartList" class="space-y-3 hidden"></div>
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="border-t border-slate-100 pt-4 space-y-2">
+                        <div class="flex justify-between text-sm text-slate-500">
+                            <span>Idadi ya Vitu:</span>
+                            <span id="totalQty" class="font-bold text-slate-800">0</span>
+                        </div>
+                        <div class="flex justify-between items-center text-base">
+                            <span class="font-bold text-slate-800">Jumla Kuu (Total):</span>
+                            <span id="totalPrice" class="font-extrabold text-xl text-emerald-600">TZS 0</span>
+                        </div>
+                    </div>
+
+                    <!-- Customer Info Form -->
+                    <form id="orderForm" onsubmit="submitOrder(event)" class="border-t border-slate-100 pt-4 space-y-3.5">
+                        <p class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Taarifa za Mteja (Customer Info)</p>
+
+                        <div>
+                            <label for="custName" class="block text-xs font-bold text-slate-700 mb-1">Jina Kamili (Full Name) *</label>
+                            <input type="text" id="custName" required placeholder="Mf. ingiza jina"
+                                class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+
+                        <div>
+                            <label for="custPhone" class="block text-xs font-bold text-slate-700 mb-1">Namba ya Simu (Phone Number) *</label>
+                            <input type="tel" id="custPhone" required placeholder="Mf. 0700000000"
+                                class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+
+                        <div>
+                            <label for="custLocation" class="block text-xs font-bold text-slate-700 mb-1">Mahali Unapoishi / Eneo (Delivery Location) *</label>
+                            <input type="text" id="custLocation" required placeholder="Mf. Bunju A Mianzini / Sinza..."
+                                class="w-full px-3.5 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 mt-2">
+                            <i class="fab fa-whatsapp text-lg"></i>
+                            Tuma Oda Sasa (WhatsApp)
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <p>© 2026 HELUNA Tanzania. Haki zote zimehifadhiwa.</p>
+            <p class="font-medium text-slate-600">Malipo: Cash on Delivery / M-Pesa / Tigo Pesa / Airtel Money</p>
+        </div>
+    </footer>
+
+    <!-- Admin Password Modal -->
+    <div id="adminPasswordModal" onclick="handleBackdropClick(event, closePasswordModal)" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="font-extrabold text-base text-slate-800">Uthibitisho wa Admin</h3>
+                </div>
+                <button type="button" onclick="closePasswordModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fas fa-times"></i></button>
+            </div>
+            <form onsubmit="verifyAdminPassword(event)" class="space-y-4">
+                <div>
+                    <label for="adminPasswordInput" class="block text-xs font-bold text-slate-700 mb-1.5">Weka Password ya Admin</label>
+                    <input type="password" id="adminPasswordInput" required placeholder="••••" autocomplete="off"
+                        class="w-full px-3.5 py-2.5 text-center tracking-widest font-extrabold text-lg border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <p id="passwordErrorMsg" class="hidden text-xs font-bold text-rose-600 mt-2">
+                        <i class="fas fa-exclamation-circle mr-1"></i> Password si sahihi! Tafadhali jaribu tena.
+                    </p>
+                </div>
+                <div class="flex gap-2 pt-1">
+                    <button type="button" onclick="closePasswordModal()" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                        Ghairi
+                    </button>
+                    <button type="submit" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition">
+                        Ingia Admin
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Modal (Oda za Wateja & Dhibiti Stock, Bei na Bidhaa) -->
+    <div id="adminModal" onclick="handleBackdropClick(event, closeAdminModal)" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-xl">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+                <div>
+                    <h3 class="font-extrabold text-lg text-slate-800">Paneli ya Admin - HELUNA</h3>
+                    <p class="text-xs text-slate-500">Angalia oda, badilisha bei/stock, au ongeza/ondoa bidhaa</p>
+                </div>
+                <button type="button" onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fas fa-times"></i></button>
+            </div>
+
+            <!-- Admin Tabs -->
+            <div class="flex gap-2 mb-4 bg-slate-100 p-1 rounded-xl">
+                <button type="button" id="tabOrdersBtn" onclick="switchAdminTab('orders')" class="flex-1 py-2 px-3 rounded-lg text-xs font-extrabold bg-white text-slate-900 shadow-sm transition">
+                    <i class="fas fa-clipboard-list mr-1 text-emerald-600"></i> Oda za Wateja (<span id="tabOrdersCount">0</span>)
+                </button>
+                <button type="button" id="tabStockBtn" onclick="switchAdminTab('stock')" class="flex-1 py-2 px-3 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+                    <i class="fas fa-boxes mr-1 text-slate-500"></i> Bidhaa, Bei &amp; Stock
+                </button>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="adminOrdersSection" class="space-y-3 max-h-[420px] overflow-y-auto mb-4 pr-1"></div>
+
+            <!-- Stock, Price & Add/Remove Product Section -->
+            <div id="adminStockSection" class="space-y-4 max-h-[420px] overflow-y-auto mb-4 pr-1 hidden">
+                <!-- Add New Product Form -->
+                <form id="addProductForm" onsubmit="addNewProduct(event)" class="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200 space-y-3">
+                    <p class="text-xs font-extrabold uppercase tracking-wider text-emerald-800">
+                        <i class="fas fa-plus-circle mr-1"></i> Ongeza Bidhaa Mpya
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                            <label for="newProdName" class="block text-[11px] font-bold text-slate-700 mb-1">Jina la Bidhaa *</label>
+                            <input type="text" id="newProdName" required placeholder="Mf. Kuku wa Nyama"
+                                class="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label for="newProdUnit" class="block text-[11px] font-bold text-slate-700 mb-1">Kipimo (Unit) *</label>
+                            <input type="text" id="newProdUnit" required placeholder="Mf. Kuku 1 / Mfuko 10kg"
+                                class="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label for="newProdCategory" class="block text-[11px] font-bold text-slate-700 mb-1">Kategoria *</label>
+                            <select id="newProdCategory" class="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <option value="Mayai & Unga">Mayai &amp; Unga</option>
+                                <option value="Vifaranga">Vifaranga</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="newProdIcon" class="block text-[11px] font-bold text-slate-700 mb-1">Emoji / Badge</label>
+                            <input type="text" id="newProdIcon" value="🛒" maxlength="4"
+                                class="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label for="newProdPrice" class="block text-[11px] font-bold text-slate-700 mb-1">Bei (TZS) *</label>
+                            <input type="number" id="newProdPrice" required min="1" step="50" placeholder="Mf. 12000"
+                                class="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label for="newProdStock" class="block text-[11px] font-bold text-slate-700 mb-1">Idadi ya Stock *</label>
+                            <input type="number" id="newProdStock" required min="0" value="10"
+                                class="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="newProdImage" class="block text-[11px] font-bold text-slate-700 mb-1">Jina la Picha au Link ya Picha (Hiari)</label>
+                        <input type="text" id="newProdImage" placeholder="Mf. picha.jpg au https://..."
+                            class="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <button type="submit" class="w-full py-2.5 px-4 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white transition flex items-center justify-center gap-1.5">
+                        <i class="fas fa-plus"></i> Hifadhi Bidhaa Mpya
+                    </button>
+                </form>
+
+                <!-- Existing Products Price, Stock & Delete List -->
+                <div class="space-y-2.5">
+                    <p class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Badilisha Bei, Stock au Ondoa Bidhaa</p>
+                    <div id="adminStockList" class="space-y-2.5"></div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-3 border-t border-slate-100 pt-4">
+                <button type="button" id="clearOrdersBtn" onclick="clearAllOrders()" class="px-3.5 py-2.5 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition">
+                    <i class="fas fa-trash-alt mr-1"></i> Futa Oda Zote
+                </button>
+                <button type="button" onclick="closeAdminModal()" class="ml-auto bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 px-5 rounded-xl text-sm transition">
+                    Funga
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = "0029";
+        const WHATSAPP_NUMBER = "255753411598";
+
+        const STORAGE_KEYS = {
+            PRODUCTS: 'heluna_products_v2',
+            ORDERS: 'heluna_orders_v2'
+        };
+
+        const defaultProducts = [
+            {
+                id: 1,
+                name: "Vifaranga",
+                unit: "Kifaranga 1",
+                category: "Vifaranga",
+                badgeIcon: "🐥",
+                price: 2000,
+                stock: 160,
+                image: "20261124_093119.jpg"
+            },
+            {
+                id: 2,
+                name: "Mayai (Trei ya Mayai 30)",
+                unit: "Trei 1 (Mayai 30)",
+                category: "Mayai & Unga",
+                badgeIcon: "🥚",
+                price: 10500,
+                stock: 20,
+                image: "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 3,
+                name: "Unga wa POWER SUPER SEMBE (5kg)",
+                unit: "Mfuko 5kg",
+                category: "Mayai & Unga",
+                badgeIcon: "🌽",
+                price: 8500,
+                stock: 25,
+                image: "Screenshot_20260203_103402_WhatsApp.jpg"
+            },
+            {
+                id: 4,
+                name: "Unga wa POWER SUPER SEMBE (25kg)",
+                unit: "Mfuko 25kg",
+                category: "Mayai & Unga",
+                badgeIcon: "🌽",
+                price: 38000,
+                stock: 15,
+                image: "Screenshot_20260203_103431_WhatsApp (1).jpg"
+            }
+        ];
+
+        function loadProducts() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+                if (!saved) return structuredClone(defaultProducts);
+                const parsed = JSON.parse(saved);
+                return Array.isArray(parsed) && parsed.length ? parsed : structuredClone(defaultProducts);
+            } catch {
+                return structuredClone(defaultProducts);
+            }
+        }
+
+        function saveProducts() {
+            localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+        }
+
+        function loadOrders() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.ORDERS);
+                const parsed = saved ? JSON.parse(saved) : [];
+                return Array.isArray(parsed) ? parsed : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveOrders() {
+            localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+            updateAdminOrderBadge();
+        }
+
+        let products = loadProducts();
+        let orders = loadOrders();
+        let cart = [];
+        let currentCategory = 'all';
+        let activeAdminTab = 'orders';
+
+        function formatTZS(amount) {
+            return "TZS " + Number(amount || 0).toLocaleString('en-US');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = String(text ?? '');
+            return div.innerHTML;
+        }
+
+        function normalizeTzPhone(rawPhone) {
+            const digits = String(rawPhone || '').replace(/\D/g, '');
+            if (digits.length === 10 && digits.startsWith('0')) {
+                return '255' + digits.slice(1);
+            }
+            if (digits.length === 12 && digits.startsWith('255')) {
+                return digits;
+            }
+            if (digits.length === 9 && (digits.startsWith('7') || digits.startsWith('6'))) {
+                return '255' + digits;
+            }
+            return null;
+        }
+
+        function buildWhatsAppOrderUrl(order) {
+            const itemsLines = order.items.map((item, idx) =>
+                `${idx + 1}. *${item.name}* (${item.unit}) — ${item.qty} x ${formatTZS(item.price)} = *${formatTZS(item.subtotal)}*`
+            ).join("\n");
+
+            const message = [
+                "🛒 *ODA MPYA - HELUNA*",
+                `🆔 *Namba ya Oda:* ${order.id}`,
+                `🕒 *Muda:* ${order.createdAt}`,
+                "────────────────────",
+                "*Bidhaa Zilizoagizwa:*",
+                itemsLines,
+                "────────────────────",
+                `*Jumla Kuu:* *${formatTZS(order.total)}*`,
+                "",
+                "*Taarifa za Mteja:*",
+                `👤 *Jina:* ${order.customer.name}`,
+                `📞 *Simu:* ${order.customer.phone}`,
+                `📍 *Eneo:* ${order.customer.location}`,
+                "💳 *Malipo:* Cash on Delivery / M-Pesa / Tigo Pesa / Airtel Money"
+            ].join("\n");
+
+            return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+        }
+
+        function reopenWhatsAppOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            window.open(buildWhatsAppOrderUrl(order), "_blank", "noopener,noreferrer");
+        }
+
+        function updateAdminOrderBadge() {
+            const badge = document.getElementById('adminOrderBadge');
+            const tabCount = document.getElementById('tabOrdersCount');
+            const pendingCount = orders.filter(o => o.status === 'Mpya').length;
+
+            if (tabCount) tabCount.textContent = orders.length;
+            if (badge) {
+                if (pendingCount > 0) {
+                    badge.textContent = pendingCount;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            grid.innerHTML = '';
+
+            const filtered = products.filter(p => {
+                const matchesCat = currentCategory === 'all' || p.category === currentCategory;
+                const matchesSearch = !searchTerm ||
+                    p.name.toLowerCase().includes(searchTerm) ||
+                    p.unit.toLowerCase().includes(searchTerm) ||
+                    p.category.toLowerCase().includes(searchTerm);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-white rounded-2xl p-8 text-center border border-slate-200">
+                        <p class="text-sm font-bold text-slate-700">Hakuna bidhaa iliyopatikana</p>
+                        <p class="text-xs text-slate-400 mt-1">Jaribu kutafuta jina lingine au chagua kategoria ya "Zote".</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(product => {
+                const isOutOfStock = product.stock <= 0;
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition";
+
+                card.innerHTML = `
+                    <div>
+                        <div class="relative mb-3">
+                            <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" class="product-img bg-slate-100" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e2e8f0/1e293b?text=${encodeURIComponent(product.name)}'">
+                            <span class="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-sm text-slate-800 text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm">
+                                ${escapeHtml(product.badgeIcon)} ${escapeHtml(product.category)}
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs mb-1">
+                            <span class="text-slate-500 font-medium">${escapeHtml(product.unit)}</span>
+                            <span class="${product.stock > 5 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'} font-bold px-2 py-0.5 rounded-md">
+                                Zimebaki: ${product.stock}
+                            </span>
+                        </div>
+                        <h3 class="font-extrabold text-base text-slate-900 mb-3">${escapeHtml(product.name)}</h3>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between border-t border-slate-100 pt-3 mb-3">
+                            <span class="text-xs text-slate-400 font-medium">Bei:</span>
+                            <span class="font-extrabold text-base text-emerald-700">${formatTZS(product.price)}</span>
+                        </div>
+                        <button type="button" onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''}
+                            class="w-full py-2.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition ${isOutOfStock ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm'}">
+                            <i class="fas fa-plus-circle"></i>
+                            ${isOutOfStock ? 'Imeisha Stock' : 'Weka Kwenye Oda'}
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function setCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => {
+                b.classList.remove('bg-emerald-600', 'text-white');
+                b.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            btn.classList.remove('bg-slate-100', 'text-slate-600');
+            btn.classList.add('bg-emerald-600', 'text-white');
+            renderProducts();
+        }
+
+        function filterProducts() {
+            renderProducts();
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || product.stock <= 0) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                if (existingItem.qty < product.stock) {
+                    existingItem.qty++;
+                } else {
+                    alert("Samahani, idadi uliyochagua imefikia mwisho wa stock iliyopo!");
+                    return;
+                }
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCartUI();
+        }
+
+        function changeQty(productId, delta) {
+            const itemIndex = cart.findIndex(i => i.id === productId);
+            if (itemIndex === -1) return;
+
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const newQty = cart[itemIndex].qty + delta;
+            if (newQty <= 0) {
+                cart.splice(itemIndex, 1);
+            } else if (newQty <= product.stock) {
+                cart[itemIndex].qty = newQty;
+            } else {
+                alert("Idadi imefikia mwisho wa stock!");
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const emptyMsg = document.getElementById('emptyCartMsg');
+            const cartList = document.getElementById('cartList');
+            const container = document.getElementById('cartItemsContainer');
+            const badge = document.getElementById('cartBadge');
+            const totalQtyEl = document.getElementById('totalQty');
+            const totalPriceEl = document.getElementById('totalPrice');
+
+            let totalQty = 0;
+            let totalPrice = 0;
+
+            if (cart.length === 0) {
+                emptyMsg.classList.remove('hidden');
+                cartList.classList.add('hidden');
+                container.classList.add('border-2', 'border-dashed');
+            } else {
+                emptyMsg.classList.add('hidden');
+                cartList.classList.remove('hidden');
+                container.classList.remove('border-2', 'border-dashed');
+                cartList.innerHTML = '';
+
+                cart.forEach(item => {
+                    const currentProd = products.find(p => p.id === item.id);
+                    const unitPrice = currentProd ? currentProd.price : item.price;
+                    totalQty += item.qty;
+                    totalPrice += unitPrice * item.qty;
+
+                    const row = document.createElement('div');
+                    row.className = "flex items-center justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-100";
+                    row.innerHTML = `
+                        <div class="pr-2">
+                            <p class="text-xs font-bold text-slate-800 line-clamp-1">${escapeHtml(item.name)}</p>
+                            <p class="text-xs text-emerald-600 font-semibold">${formatTZS(unitPrice * item.qty)}</p>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button type="button" onclick="changeQty(${item.id}, -1)" class="w-6 h-6 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 font-bold text-xs">-</button>
+                            <span class="text-xs font-extrabold w-4 text-center">${item.qty}</span>
+                            <button type="button" onclick="changeQty(${item.id}, 1)" class="w-6 h-6 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 font-bold text-xs">+</button>
+                        </div>
+                    `;
+                    cartList.appendChild(row);
+                });
+            }
+
+            badge.textContent = `${cart.length} Bidhaa`;
+            totalQtyEl.textContent = totalQty;
+            totalPriceEl.textContent = formatTZS(totalPrice);
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            if (cart.length === 0) {
+                alert("Tafadhali chagua angalau bidhaa moja kabla ya kutuma oda!");
+                return;
+            }
+
+            const name = document.getElementById('custName').value.trim();
+            const rawPhone = document.getElementById('custPhone').value.trim();
+            const location = document.getElementById('custLocation').value.trim();
+            const normalizedPhone = normalizeTzPhone(rawPhone);
+
+            if (!name || !rawPhone || !location) {
+                alert("Tafadhali jaza taarifa zote za mteja!");
+                return;
+            }
+
+            if (!normalizedPhone) {
+                alert("Tafadhali weka namba sahihi ya simu ya Tanzania (mf. 0712345678 au +255712345678).");
+                return;
+            }
+
+            for (const item of cart) {
+                const prod = products.find(p => p.id === item.id);
+                if (!prod || prod.stock < item.qty) {
+                    alert(`Samahani, bidhaa ya "${item.name}" haina stock ya kutosha (${prod ? prod.stock : 0} zimebaki).`);
+                    return;
+                }
+            }
+
+            let grandTotal = 0;
+            const orderItems = cart.map(item => {
+                const prod = products.find(p => p.id === item.id);
+                const price = prod ? prod.price : item.price;
+                const sub = price * item.qty;
+                grandTotal += sub;
+                return {
+                    id: item.id,
+                    name: item.name,
+                    unit: item.unit,
+                    qty: item.qty,
+                    price,
+                    subtotal: sub
+                };
+            });
+
+            cart.forEach(item => {
+                const prod = products.find(p => p.id === item.id);
+                if (prod) {
+                    prod.stock = Math.max(0, prod.stock - item.qty);
+                }
+            });
+            saveProducts();
+
+            const newOrder = {
+                id: "ORD-" + Date.now().toString().slice(-6),
+                createdAt: new Date().toLocaleString('sw-TZ', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                }),
+                customer: {
+                    name,
+                    phone: rawPhone,
+                    location
+                },
+                items: orderItems,
+                total: grandTotal,
+                status: 'Mpya'
+            };
+
+            orders.unshift(newOrder);
+            saveOrders();
+
+            const whatsappUrl = buildWhatsAppOrderUrl(newOrder);
+
+            cart = [];
+            document.getElementById('orderForm').reset();
+            updateCartUI();
+            renderProducts();
+
+            if (!document.getElementById('adminModal').classList.contains('hidden')) {
+                renderAdminOrders();
+            }
+
+            window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+        }
+
+        function handleBackdropClick(event, closeFn) {
+            if (event.target === event.currentTarget) {
+                closeFn();
+            }
+        }
+
+        function requestAdminAccess() {
+            const passModal = document.getElementById('adminPasswordModal');
+            const input = document.getElementById('adminPasswordInput');
+            const errorMsg = document.getElementById('passwordErrorMsg');
+
+            input.value = '';
+            errorMsg.classList.add('hidden');
+            passModal.classList.remove('hidden');
+            passModal.classList.add('flex');
+            setTimeout(() => input.focus(), 50);
+        }
+
+        function closePasswordModal() {
+            const passModal = document.getElementById('adminPasswordModal');
+            passModal.classList.add('hidden');
+            passModal.classList.remove('flex');
+        }
+
+        function verifyAdminPassword(e) {
+            e.preventDefault();
+            const input = document.getElementById('adminPasswordInput').value;
+            const errorMsg = document.getElementById('passwordErrorMsg');
+
+            if (input === ADMIN_PASSWORD) {
+                closePasswordModal();
+                openAdminModal();
+            } else {
+                errorMsg.classList.remove('hidden');
+                document.getElementById('adminPasswordInput').value = '';
+                document.getElementById('adminPasswordInput').focus();
+            }
+        }
+
+        function openAdminModal() {
+            const modal = document.getElementById('adminModal');
+            switchAdminTab(activeAdminTab);
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function switchAdminTab(tab) {
+            activeAdminTab = tab;
+            const ordersTab = document.getElementById('tabOrdersBtn');
+            const stockTab = document.getElementById('tabStockBtn');
+            const ordersSec = document.getElementById('adminOrdersSection');
+            const stockSec = document.getElementById('adminStockSection');
+            const clearBtn = document.getElementById('clearOrdersBtn');
+
+            if (tab === 'orders') {
+                ordersTab.className = "flex-1 py-2 px-3 rounded-lg text-xs font-extrabold bg-white text-slate-900 shadow-sm transition";
+                stockTab.className = "flex-1 py-2 px-3 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
+                ordersSec.classList.remove('hidden');
+                stockSec.classList.add('hidden');
+                clearBtn.classList.remove('hidden');
+                renderAdminOrders();
+            } else {
+                stockTab.className = "flex-1 py-2 px-3 rounded-lg text-xs font-extrabold bg-white text-slate-900 shadow-sm transition";
+                ordersTab.className = "flex-1 py-2 px-3 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
+                stockSec.classList.remove('hidden');
+                ordersSec.classList.add('hidden');
+                clearBtn.classList.add('hidden');
+                renderAdminStock();
+            }
+        }
+
+        function renderAdminOrders() {
+            const container = document.getElementById('adminOrdersSection');
+            container.innerHTML = '';
+
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                        <i class="fas fa-inbox text-3xl text-slate-300 mb-2"></i>
+                        <p class="text-sm font-bold text-slate-600">Hakuna oda yoyote iliyoingia bado</p>
+                        <p class="text-xs text-slate-400 mt-1">Mteja akibonyeza "Tuma Oda Sasa", oda itaonekana hapa.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            orders.forEach(order => {
+                const statusClass = order.status === 'Imekamilika'
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : 'bg-amber-100 text-amber-800';
+
+                const itemsHtml = order.items.map(i => `
+                    <li class="flex justify-between text-xs text-slate-700 py-0.5">
+                        <span>${escapeHtml(i.name)} <strong class="text-slate-900">x${i.qty}</strong></span>
+                        <span class="font-semibold">${formatTZS(i.subtotal)}</span>
+                    </li>
+                `).join('');
+
+                const card = document.createElement('div');
+                card.className = "p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3";
+                card.innerHTML = `
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/80 pb-2">
+                        <div>
+                            <span class="text-xs font-extrabold text-slate-900">${escapeHtml(order.id)}</span>
+                            <span class="text-[11px] text-slate-400 ml-2">${escapeHtml(order.createdAt)}</span>
+                        </div>
+                        <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full ${statusClass}">${escapeHtml(order.status)}</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                        <div>
+                            <p class="text-slate-400 text-[11px]">Mteja</p>
+                            <p class="font-bold text-slate-800">${escapeHtml(order.customer.name)}</p>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 text-[11px]">Simu</p>
+                            <p class="font-bold text-slate-800">${escapeHtml(order.customer.phone)}</p>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 text-[11px]">Eneo</p>
+                            <p class="font-bold text-slate-800">${escapeHtml(order.customer.location)}</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-2.5 rounded-xl border border-slate-100">
+                        <p class="text-[11px] font-bold text-slate-400 uppercase mb-1">Bidhaa Zilizoagizwa</p>
+                        <ul class="divide-y divide-slate-100">${itemsHtml}</ul>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                        <p class="text-sm font-extrabold text-emerald-700">Jumla: ${formatTZS(order.total)}</p>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="reopenWhatsAppOrder('${escapeHtml(order.id)}')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-200 hover:bg-slate-300 text-slate-800 transition" title="Fungua WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                            <button type="button" onclick="toggleOrderStatus('${escapeHtml(order.id)}')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition">
+                                ${order.status === 'Imekamilika' ? 'Rudisha Mpya' : 'Weka Imekamilika'}
+                            </button>
+                            <button type="button" onclick="deleteOrder('${escapeHtml(order.id)}')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-600 transition">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleOrderStatus(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            order.status = order.status === 'Imekamilika' ? 'Mpya' : 'Imekamilika';
+            saveOrders();
+            renderAdminOrders();
+        }
+
+        function deleteOrder(orderId) {
+            orders = orders.filter(o => o.id !== orderId);
+            saveOrders();
+            renderAdminOrders();
+        }
+
+        function clearAllOrders() {
+            if (orders.length === 0) return;
+            if (confirm("Una uhakika unataka kufuta oda zote zilizopo kwenye Admin?")) {
+                orders = [];
+                saveOrders();
+                renderAdminOrders();
+            }
+        }
+
+        function addNewProduct(e) {
+            e.preventDefault();
+            const name = document.getElementById('newProdName').value.trim();
+            const unit = document.getElementById('newProdUnit').value.trim();
+            const category = document.getElementById('newProdCategory').value;
+            const badgeIcon = document.getElementById('newProdIcon').value.trim() || "🛒";
+            const price = Math.max(1, parseInt(document.getElementById('newProdPrice').value, 10) || 0);
+            const stock = Math.max(0, parseInt(document.getElementById('newProdStock').value, 10) || 0);
+            const imageInput = document.getElementById('newProdImage').value.trim();
+
+            if (!name || !unit || !price) {
+                alert("Tafadhali jaza jina, kipimo, na bei sahihi ya bidhaa.");
+                return;
+            }
+
+            const nextId = products.reduce((maxId, p) => Math.max(maxId, Number(p.id) || 0), 0) + 1;
+            const fallbackImage = `https://placehold.co/600x400/e2e8f0/1e293b?text=${encodeURIComponent(name)}`;
+
+            products.push({
+                id: nextId,
+                name,
+                unit,
+                category,
+                badgeIcon,
+                price,
+                stock,
+                image: imageInput || fallbackImage
+            });
+
+            saveProducts();
+            renderProducts();
+            renderAdminStock();
+            document.getElementById('addProductForm').reset();
+            document.getElementById('newProdIcon').value = "🛒";
+            document.getElementById('newProdStock').value = "10";
+        }
+
+        function renderAdminStock() {
+            const list = document.getElementById('adminStockList');
+            list.innerHTML = '';
+
+            if (products.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-6 bg-slate-50 rounded-xl border border-dashed border-slate-200 text-xs text-slate-500">
+                        Hakuna bidhaa yoyote iliyopo. Ongeza bidhaa mpya hapo juu.
+                    </div>
+                `;
+                return;
+            }
+
+            products.forEach(p => {
+                const item = document.createElement('div');
+                item.className = "p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+                item.innerHTML = `
+                    <div class="min-w-0">
+                        <p class="text-xs font-extrabold text-slate-800 truncate">${escapeHtml(p.badgeIcon)} ${escapeHtml(p.name)}</p>
+                        <p class="text-[11px] text-slate-500">${escapeHtml(p.unit)} • ${escapeHtml(p.category)}</p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400">Bei (TZS)</label>
+                            <input type="number" value="${p.price}" min="1" step="50" onchange="updatePrice(${p.id}, this.value)"
+                                class="w-24 px-2 py-1 text-xs font-bold border border-slate-300 rounded-lg text-right bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400">Stock</label>
+                            <input type="number" value="${p.stock}" min="0" onchange="updateStock(${p.id}, this.value)"
+                                class="w-20 px-2 py-1 text-xs font-bold border border-slate-300 rounded-lg text-center bg-white">
+                        </div>
+                        <button type="button" onclick="deleteProduct(${p.id})" title="Ondoa Bidhaa"
+                            class="mt-3.5 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-600 transition">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function updatePrice(id, val) {
+            const prod = products.find(p => p.id === id);
+            if (prod) {
+                prod.price = Math.max(1, parseInt(val, 10) || prod.price);
+                saveProducts();
+                renderProducts();
+                updateCartUI();
+            }
+        }
+
+        function updateStock(id, val) {
+            const prod = products.find(p => p.id === id);
+            if (prod) {
+                prod.stock = Math.max(0, parseInt(val, 10) || 0);
+                saveProducts();
+                renderProducts();
+            }
+        }
+
+        function deleteProduct(id) {
+            const prod = products.find(p => p.id === id);
+            if (!prod) return;
+            if (!confirm(`Una uhakika unataka kuondoa bidhaa ya "${prod.name}"?`)) return;
+
+            products = products.filter(p => p.id !== id);
+            cart = cart.filter(item => item.id !== id);
+            saveProducts();
+            renderProducts();
+            renderAdminStock();
+            updateCartUI();
+        }
+
+        function closeAdminModal() {
+            const modal = document.getElementById('adminModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePasswordModal();
+                closeAdminModal();
+            }
+        });
+
+        // Anzisha ukurasa
+        updateAdminOrderBadge();
+        renderProducts();
+    </script>
+</body>
+</html>
