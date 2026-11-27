@@ -930,7 +930,13 @@
                 .select()
                 .single();
 
-            if (!error && data) {
+            if (error) {
+                console.error("Supabase insert error:", error);
+                alert("Imeshindikana kuhifadhi bidhaa: " + error.message);
+                return;
+            }
+
+            if (data) {
                 if (!products.some(p => p.id === data.id)) {
                     products.push(mapProductFromDB(data));
                 }
@@ -939,6 +945,7 @@
                 document.getElementById('addProductForm').reset();
                 document.getElementById('newProdIcon').value = "🛒";
                 document.getElementById('newProdStock').value = "10";
+                alert("Bidhaa imehifadhiwa kikamilifu!");
             }
         }
 
